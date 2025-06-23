@@ -1,0 +1,51 @@
+{
+  // -------------- Editor --------------
+  "editor.tabSize": 2, // tab 缩进
+  "editor.fontSize": 16, // 字体大小
+  "editor.fontWeight": "normal", // 字体粗细
+  "editor.fontFamily": "'JetBrains Mono'", // 字体1
+  "editor.codeLensFontFamily": "'JetBrains Mono'", // 字体2
+  "editor.formatOnPaste": true, // 粘贴时格式化
+  "editor.formatOnSave": true, // 保存时格式化
+  // 保存时自动修复
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit", // eslint
+    "source.organizeImports": "never" // 删除无用 import
+  },
+  "editor.bracketPairColorization.enabled": true, // 括号匹配
+  "editor.guides.bracketPairs": true, // 括号匹配
+  "editor.defaultFormatter": "esbenp.prettier-vscode", // 默认格式化工具
+  "editor.tabCompletion": "on", // tab 补全
+  "editor.cursorStyle": "block", // 光标样式
+  "editor.cursorBlinking": "smooth", // 光标闪烁丝滑
+  "editor.cursorSmoothCaretAnimation": "on", // 光标移动丝滑
+  "editor.mouseWheelZoom": true, // 鼠标滚轮缩放
+  "editor.smoothScrolling": true, // 平滑滚动
+  "editor.stickyScroll.enabled": false, // 在顶部显示当前作用域
+  "editor.minimap.size": "proportional", // 缩略图大小
+  "editor.accessibilitySupport": "off", // 关闭屏幕阅读器支持
+
+  // -------------- Prettier --------------
+  "prettier.printWidth": 110, // 单行最大长度
+  "prettier.tabWidth": 2, // tab 缩进
+  "prettier.semi": true, // 末尾分号
+  "prettier.trailingComma": "all", // 尾随逗号
+  "prettier.singleQuote": true, // 单引号
+  "prettier.useTabs": false, // 使用tab 缩进
+  "prettier.quoteProps": "as-needed", // 对象属性引号
+  "prettier.bracketSpacing": true, // 对象大括号间距
+  "prettier.jsxSingleQuote": true, // jsx 单引号
+  "prettier.arrowParens": "always", // 箭头函数参数括号
+  "prettier.bracketSameLine": true, // 换行符 win-crlf mac/unix-lf
+  "prettier.vueIndentScriptAndStyle": false, // vue script/style 缩进
+  "prettier.embeddedLanguageFormatting": "auto", // 格式化内嵌代码
+  "prettier.proseWrap": "preserve",
+  "prettier.htmlWhitespaceSensitivity": "ignore",
+
+  "explorer.fileNesting.enabled": true,
+  "explorer.fileNesting.patterns": {
+    ".env": ".env.development, .env.production",
+    ".lintstagedrc.cjs": "cz-config.cjs, stylelint.config.js"
+  },
+  "typescript.tsdk": "node_modules\\typescript\\lib"
+}

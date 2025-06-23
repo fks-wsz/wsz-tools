@@ -1,0 +1,9 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "module": "es2015",
+    "lib": ["es2020", "DOM"],
+    "types": ["@dcloudio/types"]
+  },
+  "include": ["script/mp/**/*.ts", "global.d.ts"]
+}

@@ -1,0 +1,67 @@
+{
+  "name": "wsz-tools",
+  "version": "1.0.0",
+  "author": "wsz",
+  "license": "MIT",
+  "keywords": [
+    "tools"
+  ],
+  "description": "A collection of tools for daily development tasks.",
+  "main": "index.js",
+  "type": "module",
+  "workspaces": [
+    "packages/script/browser",
+    "packages/script/mp",
+    "packages/script/node",
+    "packages/script/common"
+  ],
+  "scripts": {
+    "predev": "rimraf ./test/dist",
+    "dev": "npm-run-all -p build:dev server",
+    "build:dev": "dotenvx run -f .env.development -- rolldown -c ./rolldown.config.ts --watch",
+    "server": "live-server ./test --port=3636 --host=127.0.0.1 --open",
+    "prebuild": "rimraf ./dist",
+    "build": "dotenvx run -f .env.production -- rolldown -c ./rolldown.config.ts",
+    "postbuild": "npm run build:dts",
+    "build:dts": "tsc --project ./packages/tsconfig.node.json && tsc --project ./packages/tsconfig.browser.json && tsc --project ./packages/tsconfig.mp.json",
+    "prepare": "tsx ./npm-prepare.ts",
+    "test:mp": "cd ./test/script/mp/v2 && npm run serve"
+  },
+  "devDependencies": {
+    "@dcloudio/types": "^3.4.15",
+    "@rollup/plugin-typescript": "^12.1.2",
+    "@types/lodash-es": "^4.17.12",
+    "@types/node": "^24.0.3",
+    "commitizen": "^4.2.6",
+    "cz-customizable": "^7.4.0",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^10.1.5",
+    "eslint-plugin-prettier": "^5.5.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.5.2",
+    "live-server": "^1.2.2",
+    "npm-run-all": "^4.1.5",
+    "postcss-html": "^1.8.0",
+    "prettier": "^3.5.3",
+    "rimraf": "^6.0.1",
+    "rolldown": "^1.0.0-beta.18",
+    "stylelint": "^16.19.1",
+    "stylelint-config-idiomatic-order": "^10.0.0",
+    "stylelint-config-standard": "^38.0.0",
+    "tslib": "^2.8.1",
+    "tsx": "^4.20.3",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "@dotenvx/dotenvx": "^1.44.2",
+    "lodash-es": "^4.17.21"
+  },
+  "config": {
+    "commitizen": {
+      "path": "node_modules/cz-customizable"
+    },
+    "cz-customizable": {
+      "config": "./cz-config.cjs"
+    }
+  }
+}

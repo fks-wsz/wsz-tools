@@ -1,0 +1,2 @@
+export FORCE_COLOR=1
+npx lint-staged -c ./.lintstagedrc.cjs

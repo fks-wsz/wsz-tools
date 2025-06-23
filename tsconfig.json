@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "es2015",
+    "module": "es2015",
+    "moduleResolution": "node10",
+    "lib": ["es2015", "dom"],
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "types": ["@dcloudio/types", "node"]
+  },
+  "include": ["scripts/npm-prepare.ts", "constants/*.ts", "packages/**/*.ts"],
+  "exclude": ["node_modules", "dist"]
+}
