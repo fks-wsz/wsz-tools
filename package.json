@@ -26,7 +26,7 @@
     "build:dts": "tsc --project ./packages/tsconfig.node.json && tsc --project ./packages/tsconfig.browser.json && tsc --project ./packages/tsconfig.mp.json",
     "prepare": "tsx ./scripts/npm-prepare.ts",
     "test:mp": "cd ./test/script/mp/v2 && npm run serve",
-    "cz": "cz"
+    "cz": "npx lint-staged -c ./.lintstagedrc.cjs && cz"
   },
   "devDependencies": {
     "@dcloudio/types": "^3.4.15",

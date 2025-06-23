@@ -2,7 +2,7 @@ export default {
   extends: ['cz'],
   rules: {
     // header最大94字符
-    'header-max-length': [0, 'always', 94],
+    'header-max-length': [0, 'always', 80],
 
     // type的类型必须在指定范围内
     'type-enum': [
