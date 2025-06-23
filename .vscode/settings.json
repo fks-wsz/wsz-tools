@@ -52,7 +52,8 @@
   "explorer.fileNesting.enabled": true,
   "explorer.fileNesting.patterns": {
     ".env": ".env.development, .env.production",
-    ".lintstagedrc.cjs": "cz-config.cjs, stylelint.config.js"
+    ".commitlintrc.js": "cz-config.cjs",
+    ".lintstagedrc.cjs": "stylelint.config.js"
   },
   "typescript.tsdk": "node_modules\\typescript\\lib"
 }
