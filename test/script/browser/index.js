@@ -1,5 +1,5 @@
 import { getDOM, print } from '../../dist/script/browser/index.js';
-import { callAndCatch } from '../../dist/script/common/index.js';
+import { callAndCatch } from '../../dist/script/common';
 
 function test() {
   const res = callAndCatch(
