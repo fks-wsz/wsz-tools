@@ -3,7 +3,8 @@
   "compilerOptions": {
     "module": "es2015",
     "lib": ["es2020", "DOM"],
-    "types": ["@dcloudio/types"]
+    "types": ["@dcloudio/types"],
+    "declarationDir": "../dist/types/mp"
   },
   "include": ["script/mp/**/*.ts", "global.d.ts"]
 }

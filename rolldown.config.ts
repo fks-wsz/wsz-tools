@@ -1,7 +1,6 @@
 import { defineConfig, RolldownOptions } from 'rolldown';
 import path from 'node:path';
-import typescript from '@rollup/plugin-typescript';
-import { CWD, SCRIPT_PATH, DIST_PATH, ROOT_PATH, __DEV__ } from './constants';
+import { SCRIPT_PATH, DIST_PATH, ROOT_PATH, __DEV__ } from './constants';
 import { defaultsDeep } from 'lodash-es';
 
 // 多入口
@@ -23,9 +22,16 @@ const entries = [
   {
     input: path.join(SCRIPT_PATH, 'node/index.ts'),
     output: {
-      format: 'esm',
+      format: 'cjs',
     },
     tsconfigPath: path.join(ROOT_PATH, 'tsconfig.node.json'),
+  },
+  {
+    input: path.join(SCRIPT_PATH, 'common/index.ts'),
+    output: {
+      format: 'esm',
+    },
+    tsconfigPath: path.join(ROOT_PATH, 'tsconfig.common.json'),
   },
 ] as (RolldownOptions & { tsconfigPath: string })[];
 
@@ -48,23 +54,15 @@ const commonConfig: CommonRolldownOptions = {
 export default defineConfig(
   entries.map((entry) => {
     const { tsconfigPath, input } = entry;
+    const targetPath = path.join(DIST_PATH, path.relative(ROOT_PATH, path.dirname(input as string)));
     const resolvedEntryConfig: RolldownOptions = {
       ...entry,
       output: {
-        entryFileNames: path.join(
-          DIST_PATH,
-          path.relative(ROOT_PATH, path.dirname(input as string)),
-          '[name].js',
-        ),
+        entryFileNames: path.join(targetPath, '[name].js'),
       },
-      plugins: [
-        typescript({
-          tsconfig: tsconfigPath,
-          compilerOptions: {
-            declarationDir: path.join(DIST_PATH, 'types'),
-          },
-        }),
-      ],
+      resolve: {
+        tsconfigFilename: tsconfigPath,
+      },
     };
     const mergedCommonConfig = defaultsDeep(resolvedEntryConfig, commonConfig);
     return mergedCommonConfig;

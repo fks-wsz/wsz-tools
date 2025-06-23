@@ -2,7 +2,8 @@
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
     "module": "es2015",
-    "lib": ["DOM", "ES2020"]
+    "lib": ["DOM", "ES2020"],
+    "declarationDir": "../dist/types/browser"
   },
   "include": ["script/browser/**/*.ts", "global.d.ts"]
 }
