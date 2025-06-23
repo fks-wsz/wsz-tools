@@ -1,4 +1,5 @@
 import { NOOP } from '@script/common';
+import { isEmpty, isObject } from 'lodash-es';
 
 const unitRE = /^(\d+)(rpx|px|%)?$/;
 
@@ -29,7 +30,7 @@ export function unitTransform2Reactive(value: string | number): string {
   }
   const valueStr = String(value).trim();
   if (!unitRE.test(valueStr)) {
-    throw Error('单位转换失败, 单位必须是 以rpx 或 px 或 % 或 空结尾，例如：100rpx, 200px, 50% 或者 300');
+    throw Error('单位转换失败, 单位必须是 以rpx 或 px 或 % 或 空结尾,例如,100rpx, 200px, 50% 或者 300');
   }
   const match = valueStr.match(unitRE),
     scale = getScaleRatio();
@@ -50,16 +51,31 @@ export function unitTransform2Reactive(value: string | number): string {
   return res;
 }
 
+type ToastConfig = UniNamespace.ShowToastOptions;
+export function copyText(text: string): Promise<void>;
+export function copyText(text: string, toastConfig: ToastConfig): Promise<void>;
+export function copyText(text: string, toastConfig: ToastConfig, completeFn: () => void): Promise<void>;
 /**
  * @description 复制文本到os剪切板
  * @param {string} text 要复制的文本
+ * @param {ToastConfig} [toastConfig] 成功弹窗配置
+ * @param {() => void} [completeFn] 完成后的回调函数
  */
-export function copyText(text: string, completeFn: () => void): Promise<void> {
+export function copyText(text: string, toastConfig?: ToastConfig, completeFn?: () => void): Promise<void> {
   if (typeof text !== 'string') return Promise.reject(Error('复制目标非字符串'));
   return new Promise((resolve, reject) => {
+    let resolveFn = resolve;
+    if (isObject(toastConfig) && !isEmpty(toastConfig)) {
+      resolveFn = () => {
+        uni.showToast(toastConfig);
+      };
+    }
     uni.setClipboardData({
       data: text,
-      success: resolve,
+      // #ifdef APP || H5
+      showToast: false,
+      // #endif
+      success: resolveFn,
       fail: reject,
       complete: typeof completeFn === 'function' ? completeFn : NOOP,
     });

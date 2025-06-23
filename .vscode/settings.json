@@ -1,5 +1,7 @@
 {
-  // -------------- Editor --------------
+  /*--------------------------------------
+    -------------- Editor ----------------
+    -------------------------------------- */
   "editor.tabSize": 2, // tab 缩进
   "editor.fontSize": 16, // 字体大小
   "editor.fontWeight": "normal", // 字体粗细
@@ -7,8 +9,8 @@
   "editor.codeLensFontFamily": "'JetBrains Mono'", // 字体2
   "editor.formatOnPaste": true, // 粘贴时格式化
   "editor.formatOnSave": true, // 保存时格式化
-  // 保存时自动修复
   "editor.codeActionsOnSave": {
+    // 保存时自动修复
     "source.fixAll.eslint": "explicit", // eslint
     "source.organizeImports": "never" // 删除无用 import
   },
@@ -23,10 +25,15 @@
   "editor.smoothScrolling": true, // 平滑滚动
   "editor.stickyScroll.enabled": false, // 在顶部显示当前作用域
   "editor.minimap.size": "proportional", // 缩略图大小
-  "editor.accessibilitySupport": "off", // 关闭屏幕阅读器支持
+  "editor.accessibilitySupport": "off", // 辅助功能支持
+  "editor.renderWhitespace": "boundary", // 显示空格和制表符
+  "editor.wordWrap": "on", // 窗口缩放级别
 
-  // -------------- Prettier --------------
-  "prettier.printWidth": 110, // 单行最大长度
+  /*--------------------------------------
+    -------------- Prettier --------------
+    -------------------------------------- */
+  "window.zoomLevel": 1,
+  "prettier.printWidth": 120, // 单行最大长度
   "prettier.tabWidth": 2, // tab 缩进
   "prettier.semi": true, // 末尾分号
   "prettier.trailingComma": "all", // 尾随逗号
@@ -36,11 +43,11 @@
   "prettier.bracketSpacing": true, // 对象大括号间距
   "prettier.jsxSingleQuote": true, // jsx 单引号
   "prettier.arrowParens": "always", // 箭头函数参数括号
-  "prettier.bracketSameLine": true, // 换行符 win-crlf mac/unix-lf
+  "prettier.bracketSameLine": true, // html 标签闭合括号位置
   "prettier.vueIndentScriptAndStyle": false, // vue script/style 缩进
   "prettier.embeddedLanguageFormatting": "auto", // 格式化内嵌代码
-  "prettier.proseWrap": "preserve",
-  "prettier.htmlWhitespaceSensitivity": "ignore",
+  "prettier.proseWrap": "preserve", // markdown 换行方式
+  "prettier.htmlWhitespaceSensitivity": "strict", // html 空格敏感度
 
   "explorer.fileNesting.enabled": true,
   "explorer.fileNesting.patterns": {
