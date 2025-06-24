@@ -2,14 +2,19 @@ import { exec } from 'child_process';
 import { __DEV__, CWD } from '../constants';
 
 function buildDts() {
-  let command = '',
+  let command = `tsc --project ./packages/tsconfig.node.json && tsc --project ./packages/tsconfig.browser.json && tsc --project ./packages/tsconfig.mp.json && tsc --project ./packages/tsconfig.common.json`,
     cwd = CWD;
-  if (__DEV__) {
-    command = `tsc --project ./packages/tsconfig.node.json --declarationDir ./test/dist/types/node && tsc --project ./packages/tsconfig.browser.json --declarationDir ./test/dist/types/browser && tsc --project ./packages/tsconfig.mp.json --declarationDir ./test/dist/types/mp && tsc --project ./packages/tsconfig.common.json --declarationDir ./test/dist/types/common`;
-  } else {
-    command = `tsc --project ./packages/tsconfig.node.json && tsc --project ./packages/tsconfig.browser.json && tsc --project ./packages/tsconfig.mp.json && tsc --project ./packages/tsconfig.common.json`;
-  }
-  exec(command, { cwd }, (error, stdout, stderr) => {});
+  exec(command, { cwd }, (error, stdout, stderr) => {
+    if (error) {
+      console.error(`Error executing command: ${error.message}`);
+      return;
+    }
+    if (stderr) {
+      console.error(`Error output: ${stderr}`);
+      return;
+    }
+    console.log('类型声明生成成功！');
+  });
 }
 
 buildDts();

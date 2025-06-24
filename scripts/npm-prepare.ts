@@ -19,7 +19,7 @@ function setRepoGit(): void {
     if (stdout) {
       console.log(`stdout: ${stdout}`);
     }
-    console.log('Invoke setRepoGit success!');
+    console.log('Git 仓库配置更改成功！');
   });
 }
 

@@ -11,5 +11,5 @@
     "types": ["@dcloudio/types", "node"]
   },
   "include": ["scripts/npm-prepare.ts", "constants/*.ts", "packages/**/*.ts", "packages/*.ts", "test/**/*.ts"],
-  "exclude": ["node_modules", "dist"]
+  "exclude": ["node_modules", "./dist"]
 }

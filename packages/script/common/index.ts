@@ -36,6 +36,14 @@ export function debounce(
 
 export function throttle(fn: Function, delay: number, options?: { immediate?: Function; inDelayFn: Function }) {}
 
+/**
+ *
+ * @param {function} fn - 调用函数
+ * @param {any[]} [args] - 函数参数
+ * @param {unknown} [context] - 函数上下文(this)
+ * @param {function} [errorHandler] - 错误处理函数
+ * @returns
+ */
 export function callAndCatch(fn: Function, args?: any[], context?: unknown, errorHandler?: Function) {
   if (typeof fn !== 'function') throw Error(`fn is not a function, got ${typeof fn}`);
   try {
