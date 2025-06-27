@@ -7,7 +7,27 @@
     "tools"
   ],
   "description": "A collection of tools for daily development tasks.",
-  "main": "index.js",
+  "exports": {
+    "./script/browser": {
+      "import": "./dist/script/browser/index.js",
+      "types": "./dist/types/script/browser/index.d.ts"
+    },
+    "./script/mp": {
+      "import": "./dist/script/mp/index.js",
+      "types": "./dist/types/script/mp/index.d.ts"
+    },
+    "./script/node": {
+      "require": "./dist/script/node/index.js",
+      "types": "./dist/types/script/node/index.d.ts"
+    },
+    "./script/common": {
+      "import": "./dist/script/common/index.js",
+      "types": "./dist/types/script/common/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
   "type": "module",
   "workspaces": [
     "packages/script/browser",
@@ -17,7 +37,7 @@
   ],
   "scripts": {
     "predev": "rimraf ./test/dist",
-    "dev": "npm-run-all -p dev:build server",
+    "dev": "npm-run-all -p dev:build test:browser",
     "dev:build": "dotenvx run -f .env.development -- rolldown -c ./rolldown.config.ts --watch",
     "server": "live-server ./test --port=3636 --host=127.0.0.1 --open",
     "prebuild": "rimraf ./dist",
@@ -25,6 +45,7 @@
     "postbuild": "npm run build:dts",
     "build:dts": "tsc -b packages/tsconfig.json",
     "prepare": "tsx ./scripts/npm-prepare.ts",
+    "test:browser": "cd ./test && npm run dev",
     "test:mp": "cd ./test/script/mp/v2 && npm run serve",
     "cz": "npx lint-staged -c ./.lintstagedrc.cjs && cz"
   },

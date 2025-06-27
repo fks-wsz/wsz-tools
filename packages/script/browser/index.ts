@@ -1,4 +1,4 @@
-import { callAndCatch, EMPTY_OBJ } from '@script/common';
+import { callAndCatch, CommonFn, EMPTY_OBJ } from '@script/common';
 
 export function getDOM(id: string): HTMLElement | null {
   return document.getElementById(id);
@@ -19,12 +19,12 @@ export function print(text: string): void {
  * @returns {function}
  */
 export function debounce(
-  fn: Function,
+  fn: CommonFn,
   delay: number = 1000,
-  options?: { immediate?: boolean; inDelayFn?: Function; maxDelay?: number },
+  options?: { immediate?: boolean; inDelayFn?: CommonFn; maxDelay?: number },
 ) {
   const { immediate, inDelayFn, maxDelay } = options || EMPTY_OBJ;
-  let timer: number | null | NodeJS.Timeout = null,
+  let timer: number | null = null,
     lastCallOrInitStamp: number | undefined = undefined, // 上次调用或初始时间戳
     initImmediate = !immediate; // 是否已经初始化立即执行
 
@@ -50,7 +50,7 @@ export function debounce(
       }
 
       clearTimeout(timer);
-      timer = setTimeout(() => {
+      timer = window.setTimeout(() => {
         callAndRecord.apply(this, args);
         timer = null;
       }, delay);
@@ -61,7 +61,7 @@ export function debounce(
       if (!lastCallOrInitStamp) {
         lastCallOrInitStamp = now; // 记录开始调用时间, 用于后续判断是否超过最大延迟时间
       }
-      timer = setTimeout(() => {
+      timer = window.setTimeout(() => {
         callAndRecord.apply(this, args);
         timer = null;
       }, delay);
@@ -78,7 +78,11 @@ export function debounce(
  * @param {function} options.inDelayFn - 在延迟期间调用的函数, 例如显示提示等
  * @returns { function }
  */
-export function throttle(fn: Function, delay: number, options?: { immediate?: boolean; inDelayFn?: Function }) {
+export function throttle(
+  fn: CommonFn,
+  delay: number,
+  options?: { immediate?: boolean; inDelayFn?: CommonFn; maxDelay?: number } | undefined,
+) {
   return debounce(fn, delay, {
     maxDelay: delay,
     ...options,
