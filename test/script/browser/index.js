@@ -1,20 +1,19 @@
 import { getDOM, print } from '../../dist/script/browser/index.js';
-import { callAndCatch } from '../../dist/script/common/index.js';
+import { callAndCatch, debounce, throttle } from '../../dist/script/common/index.js';
 
-function test() {
-  const res = callAndCatch(
-    function (num1, num2) {
-      throw Error('xxx');
-      return num1 + num2;
+const btnEl = document.getElementById('btn');
+
+window.addEventListener(
+  'scroll',
+  debounce(
+    () => {
+      console.log('执行');
+      throw Error('测试错误');
     },
-    [10, 20],
-    null,
-    (error) => {
-      console.log('error --->', error);
+    1000,
+    {
+      immediate: true,
+      maxDelay: 3000,
     },
-  );
-
-  console.log('res --->', res);
-}
-
-test();
+  ),
+);

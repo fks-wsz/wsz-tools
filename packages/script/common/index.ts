@@ -1,60 +1,38 @@
+export type ErrorHandler = (e: unknown) => void;
+
 export const NOOP = () => {};
 export const EMPTY_OBJ = __DEV__ ? Object.freeze({}) : Object.create(null);
 export const EMPTY_ARR = __DEV__ ? Object.freeze([]) : new Array();
 
-export function debounce(
-  fn: Function,
-  delay: number,
-  options?: { immediate?: boolean; inDelayFn?: Function; maxDelay?: number },
-) {
-  let lastStamp = 0;
-  const { immediate } = options || EMPTY_OBJ;
-  let initImmediate = !immediate;
-  return function (this: unknown) {
-    const now = Date.now();
-    if (!initImmediate && immediate) {
-      // 是否立即执行
-      initImmediate = true;
-      lastStamp = now;
-      callAndCatch(fn, Array.from(arguments), this);
-      return;
-    }
-    if (now - lastStamp >= delay) {
-      // 超过了延迟时间
-      callAndCatch(fn, Array.from(arguments), this);
-      lastStamp = now;
-    } else {
-      // 没有超过延迟时间
-      lastStamp = now;
-      const { inDelayFn } = options || EMPTY_OBJ;
-      if (typeof inDelayFn === 'function') {
-        callAndCatch(inDelayFn);
-      }
-    }
-  };
+let errorHandler: ErrorHandler = (error: unknown) => {
+  if (__DEV__) {
+    console.error('[wsz-tools] Error:', error);
+  }
+};
+/**
+ * @description 设置全局错误处理函数
+ * @param {function} handler 全局错误处理函数
+ */
+export function setGlobalErrorHandler(handler: ErrorHandler) {
+  if (typeof handler !== 'function') {
+    throw new Error('[wsz-tools] Global error handler must be a function');
+  }
+  errorHandler = handler;
 }
-
-export function throttle(fn: Function, delay: number, options?: { immediate?: Function; inDelayFn: Function }) {}
 
 /**
  *
  * @param {function} fn - 调用函数
  * @param {any[]} [args] - 函数参数
  * @param {unknown} [context] - 函数上下文(this)
- * @param {function} [errorHandler] - 错误处理函数
  * @returns
  */
-export function callAndCatch(fn: Function, args?: any[], context?: unknown, errorHandler?: Function) {
+export function callAndCatch(fn: Function, args?: any[], context?: unknown) {
   if (typeof fn !== 'function') throw Error(`fn is not a function, got ${typeof fn}`);
   try {
     const result = fn.apply(context, args);
     return result;
   } catch (e: unknown) {
-    if (__DEV__) {
-      console.error('Error in callAndCatch:', e);
-    }
-    if (typeof errorHandler === 'function') {
-      callAndCatch(errorHandler, [e]);
-    }
+    callAndCatch(errorHandler, [e]);
   }
 }

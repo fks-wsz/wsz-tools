@@ -17,8 +17,8 @@
   ],
   "scripts": {
     "predev": "rimraf ./test/dist",
-    "dev": "npm-run-all -p build:dev server",
-    "build:dev": "dotenvx run -f .env.development -- rolldown -c ./rolldown.config.ts --watch",
+    "dev": "npm-run-all -p dev:build server",
+    "dev:build": "dotenvx run -f .env.development -- rolldown -c ./rolldown.config.ts --watch",
     "server": "live-server ./test --port=3636 --host=127.0.0.1 --open",
     "prebuild": "rimraf ./dist",
     "build": "dotenvx run -f .env.production -- rolldown -c ./rolldown.config.ts",
