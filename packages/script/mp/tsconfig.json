@@ -1,0 +1,13 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "module": "es2015",
+    "lib": ["es2020", "DOM"],
+    "types": ["@dcloudio/types"],
+    "composite": true,
+    "declarationDir": "../../../dist/types/mp",
+    "tsBuildInfoFile": "../../../.tsbuildinfo/mp.tsbuildinfo"
+  },
+  "references": [{ "path": "../common" }],
+  "include": ["./*.ts", "../../global.d.ts"]
+}

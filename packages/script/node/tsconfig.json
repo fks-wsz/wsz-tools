@@ -1,0 +1,12 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "module": "commonjs",
+    "lib": ["ES2020"],
+    "composite": true,
+    "declarationDir": "../../../dist/types/node",
+    "tsBuildInfoFile": "../../../.tsbuildinfo/node.tsbuildinfo"
+  },
+  "references": [{ "path": "../common" }],
+  "include": ["./*.ts", "../../global.d.ts"]
+}

@@ -1,0 +1,12 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "module": "es2015",
+    "lib": ["DOM", "ES2020"],
+    "composite": true,
+    "declarationDir": "../../../dist/types/browser",
+    "tsBuildInfoFile": "../../../.tsbuildinfo/browser.tsbuildinfo"
+  },
+  "references": [{ "path": "../common" }],
+  "include": ["./*.ts", "../../global.d.ts"]
+}

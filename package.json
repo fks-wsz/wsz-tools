@@ -23,7 +23,7 @@
     "prebuild": "rimraf ./dist",
     "build": "dotenvx run -f .env.production -- rolldown -c ./rolldown.config.ts",
     "postbuild": "npm run build:dts",
-    "build:dts": "tsx ./scripts/build-dts.ts",
+    "build:dts": "tsc -b packages/tsconfig.json",
     "prepare": "tsx ./scripts/npm-prepare.ts",
     "test:mp": "cd ./test/script/mp/v2 && npm run serve",
     "cz": "npx lint-staged -c ./.lintstagedrc.cjs && cz"

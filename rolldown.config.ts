@@ -4,36 +4,44 @@ import { SCRIPT_PATH, DIST_PATH, ROOT_PATH, __DEV__ } from './constants';
 import { defaultsDeep } from 'lodash-es';
 
 // 多入口
-const entries = [
+const entries: RolldownOptions[] = [
   {
     input: path.join(SCRIPT_PATH, 'browser/index.ts'),
     output: {
       format: 'esm',
     },
-    tsconfigPath: path.join(ROOT_PATH, 'tsconfig.browser.json'),
+    resolve: {
+      tsconfigFilename: path.join(SCRIPT_PATH, 'browser', 'tsconfig.json'),
+    },
   },
   {
     input: path.join(SCRIPT_PATH, 'mp/index.ts'),
     output: {
       format: 'esm',
     },
-    tsconfigPath: path.join(ROOT_PATH, 'tsconfig.mp.json'),
+    resolve: {
+      tsconfigFilename: path.join(SCRIPT_PATH, 'mp', 'tsconfig.json'),
+    },
   },
   {
     input: path.join(SCRIPT_PATH, 'node/index.ts'),
     output: {
       format: 'cjs',
     },
-    tsconfigPath: path.join(ROOT_PATH, 'tsconfig.node.json'),
+    resolve: {
+      tsconfigFilename: path.join(SCRIPT_PATH, 'node', 'tsconfig.json'),
+    },
   },
   {
     input: path.join(SCRIPT_PATH, 'common/index.ts'),
     output: {
       format: 'esm',
     },
-    tsconfigPath: path.join(ROOT_PATH, 'tsconfig.common.json'),
+    resolve: {
+      tsconfigFilename: path.join(SCRIPT_PATH, 'common', 'tsconfig.json'),
+    },
   },
-] as (RolldownOptions & { tsconfigPath: string })[];
+];
 
 // 公共配置
 type CommonRolldownOptions = Omit<RolldownOptions, 'input'>;
@@ -53,15 +61,12 @@ const commonConfig: CommonRolldownOptions = {
 // 最终配置
 export default defineConfig(
   entries.map((entry) => {
-    const { tsconfigPath, input } = entry;
+    const { input } = entry;
     const targetPath = path.join(DIST_PATH, path.relative(ROOT_PATH, path.dirname(input as string)));
     const resolvedEntryConfig: RolldownOptions = {
       ...entry,
       output: {
         entryFileNames: path.join(targetPath, '[name].js'),
-      },
-      resolve: {
-        tsconfigFilename: tsconfigPath,
       },
     };
     const mergedCommonConfig = defaultsDeep(resolvedEntryConfig, commonConfig);
