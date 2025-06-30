@@ -4,9 +4,7 @@
     "module": "es2015",
     "lib": ["DOM", "ES2020"],
     "composite": true,
-    "declarationDir": "../../../dist/types/script/browser",
-    "tsBuildInfoFile": "../../../.tsbuildinfo/browser.tsbuildinfo"
+    "outDir": "../../../dist/types/script/browser"
   },
-  "references": [{ "path": "../common" }],
-  "include": ["./*.ts", "../../global.d.ts"]
+  "include": ["./*.ts", "../../global.d.ts", "src/*.ts"]
 }

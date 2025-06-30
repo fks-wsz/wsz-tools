@@ -1,9 +1,9 @@
 export type ErrorHandler = (e: unknown) => void;
 export type CommonFn = (...args: any[]) => any;
 
-export const NOOP = () => {};
-export const EMPTY_OBJ = __DEV__ ? Object.freeze({}) : Object.create(null);
-export const EMPTY_ARR = __DEV__ ? Object.freeze([]) : new Array();
+export const NOOP = (): void => {};
+export const EMPTY_OBJ: Record<string, any> = __DEV__ ? Object.freeze({}) : Object.create(null);
+export const EMPTY_ARR: readonly never[] = __DEV__ ? Object.freeze([]) : [];
 
 // 默认错误处理函数
 let errorHandler: ErrorHandler = (error: unknown) => {
@@ -15,7 +15,7 @@ let errorHandler: ErrorHandler = (error: unknown) => {
  * @description 设置全局错误处理函数
  * @param {function} handler 全局错误处理函数
  */
-export function setGlobalErrorHandler(handler: ErrorHandler) {
+export function setGlobalErrorHandler(handler: ErrorHandler): void {
   if (typeof handler !== 'function') {
     throw new Error('[wsz-tools] Global error handler must be a function');
   }

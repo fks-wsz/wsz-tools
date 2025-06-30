@@ -3,3 +3,4 @@ declare const __PROD__: boolean;
 
 declare const self: typeof globalThis;
 declare const window: typeof globalThis;
+declare const global: typeof globalThis;

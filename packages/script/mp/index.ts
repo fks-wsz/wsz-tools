@@ -21,7 +21,7 @@ function getScaleRatio(standard: number = 750, fixed: number = 2): number {
  * @example
  * unitTransform2Reactive(100) // 返回 '100rpx'
  * unitTransform2Reactive('300rpx') // 返回 '300rpx'
- * unitTransform2Reactive('200px') // 返回 '200px'
+ * unitTransform2Reactive('200px') // 返回 '(200 * 缩放比)px'
  * unitTransform2Reactive('50%') // 返回 '50%'
  */
 export function unitTransform2Reactive(value: string | number): string {

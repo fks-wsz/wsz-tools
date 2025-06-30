@@ -5,9 +5,7 @@
     "lib": ["es2020", "DOM"],
     "types": ["@dcloudio/types"],
     "composite": true,
-    "declarationDir": "../../../dist/types/script/mp",
-    "tsBuildInfoFile": "../../../.tsbuildinfo/mp.tsbuildinfo"
+    "outDir": "../../../dist/types/script/mp"
   },
-  "references": [{ "path": "../common" }],
   "include": ["./*.ts", "../../global.d.ts"]
 }

@@ -1,9 +1,9 @@
 import { defineConfig, RolldownOptions } from 'rolldown';
 import path from 'node:path';
-import { SCRIPT_PATH, DIST_PATH, ROOT_PATH, __DEV__ } from './constants';
+import { DIST_PATH, ROOT_PATH, SCRIPT_PATH, __DEV__ } from './constants';
 import { defaultsDeep } from 'lodash-es';
+import { dts } from 'rolldown-plugin-dts';
 
-// 多入口
 const entries: RolldownOptions[] = [
   {
     input: path.join(SCRIPT_PATH, 'browser/index.ts'),
@@ -60,16 +60,38 @@ const commonConfig: CommonRolldownOptions = {
 
 // 最终配置
 export default defineConfig(
-  entries.map((entry) => {
-    const { input } = entry;
-    const targetPath = path.join(DIST_PATH, path.relative(ROOT_PATH, path.dirname(input as string)));
-    const resolvedEntryConfig: RolldownOptions = {
-      ...entry,
-      output: {
-        entryFileNames: path.join(targetPath, '[name].js'),
-      },
-    };
-    const mergedCommonConfig = defaultsDeep(resolvedEntryConfig, commonConfig);
-    return mergedCommonConfig;
-  }),
+  entries
+    .map((entry) => {
+      // 入口文件处理
+      const { input } = entry;
+      const targetPath = path.join(DIST_PATH, path.relative(ROOT_PATH, path.dirname(input as string)));
+      const resolvedEntryConfig: RolldownOptions = {
+        ...entry,
+        output: {
+          entryFileNames: path.join(targetPath, '[name].js'),
+        },
+      };
+      const mergedCommonConfig = defaultsDeep(resolvedEntryConfig, commonConfig);
+      return mergedCommonConfig;
+    })
+    .concat(
+      // 类型声明生成
+      entries.map((entry) => {
+        const { input } = entry;
+        const targetPath = path.join(DIST_PATH, 'types', path.relative(ROOT_PATH, path.dirname(input as string)));
+        return {
+          ...entry,
+          output: {
+            dir: targetPath,
+          },
+          plugins: [
+            dts({
+              tsconfig: entry.resolve?.tsconfigFilename,
+              isolatedDeclarations: true,
+              emitDtsOnly: true,
+            }),
+          ],
+        };
+      }),
+    ),
 );

@@ -4,9 +4,7 @@
     "module": "commonjs",
     "lib": ["ES2020"],
     "composite": true,
-    "declarationDir": "../../../dist/types/script/node",
-    "tsBuildInfoFile": "../../../.tsbuildinfo/node.tsbuildinfo"
+    "outDir": "../../../dist/types/script/node"
   },
-  "references": [{ "path": "../common" }],
   "include": ["./*.ts", "../../global.d.ts"]
 }

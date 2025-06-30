@@ -3,5 +3,5 @@ dist/
 test/dist/
 .temp/
 .rollup.cache/
-.tsbuildinfo/
+tsconfig.tsbuildinfo
 .DS_Store

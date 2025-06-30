@@ -7,6 +7,9 @@
     "tools"
   ],
   "description": "A collection of tools for daily development tasks.",
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "exports": {
     "./script/browser": {
       "import": "./dist/script/browser/index.js",
@@ -44,8 +47,6 @@
     "server": "live-server ./test --port=3636 --host=127.0.0.1 --open",
     "prebuild": "rimraf ./dist",
     "build": "dotenvx run -f .env.production -- rolldown -c ./rolldown.config.ts",
-    "postbuild": "npm run build:dts",
-    "build:dts": "tsc -b packages/tsconfig.json",
     "link": "tsx ./scripts/package-link.ts",
     "test:browser": "cd ./test && npm run dev",
     "test:mp": "cd ./test/script/mp/v2 && npm run serve",
@@ -70,6 +71,7 @@
     "prettier": "^3.5.3",
     "rimraf": "^6.0.1",
     "rolldown": "^1.0.0-beta.18",
+    "rolldown-plugin-dts": "^0.13.13",
     "stylelint": "^16.19.1",
     "stylelint-config-idiomatic-order": "^10.0.0",
     "stylelint-config-standard": "^38.0.0",
