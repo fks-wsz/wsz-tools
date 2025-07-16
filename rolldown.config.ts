@@ -51,6 +51,7 @@ const commonConfig: CommonRolldownOptions = {
       removeWhitespace: !__DEV__,
       compress: !__DEV__,
     },
+    sourcemap: __DEV__,
   },
   define: {
     __DEV__: JSON.stringify(process.env.NODE_ENV !== 'production'),

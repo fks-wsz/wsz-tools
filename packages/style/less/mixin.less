@@ -1,0 +1,128 @@
+/* ------------- 布局定位类 -------------- */
+.absolute-center(@axis: 'all') {
+  position: absolute;
+  .__absolute-center(@axis) when (@axis = 'x') {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .__absolute-center(@axis) when (@axis = 'y') {
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .__absolute-center(@axis) when (@axis = 'all') {
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .__absolute-center(@axis);
+}
+
+.absolute(@top: unset, @right: unset, @bottom: unset, @left: unset) {
+  position: absolute;
+  top: @top;
+  right: @right;
+  bottom: @bottom;
+  left: @left;
+}
+
+.fixed(@top: unset, @right: unset, @bottom: unset, @left: unset) {
+  position: fixed;
+  top: @top;
+  right: @right;
+  bottom: @bottom;
+  left: @left;
+}
+
+.flex(@main: unset, @cross: unset) {
+  display: flex;
+  justify-content: @main;
+  align-items: @cross;
+}
+.flex-col(@main: unset, @cross: unset) {
+  display: flex;
+  flex-direction: column;
+  justify-content: @main;
+  align-items: @cross;
+}
+
+/* 列表排列  */
+.list-mb(@gap) {
+  &:not(:last-child) {
+    margin-bottom: @gap;
+  }
+}
+
+/* ------------- 尺寸盒子类 -------------- */
+.overflow(@x: unset, @y: unset) {
+  overflow-x: @x;
+  overflow-y: @y;
+}
+
+/* 滚动条隐藏 */
+.no-scrollbar() {
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.size(@size) {
+  width: @size;
+  height: @size;
+}
+
+/* ------------- 文字类 -------------- */
+.text-center(@height: unset) {
+  text-align: center;
+  line-height: @height;
+}
+
+/* 文字渐变  */
+.text-gradient(@linear-gradient) {
+  .__gradient(@linear-gradient) {
+    background: @linear-gradient;
+  }
+  .__gradient(@linear-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+.text-with-bg(@path) {
+  background-image: url(@path);
+  background-size: cover;
+  background-position: center;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+/* 文字省略  */
+.line-clamp(@limit: 1) {
+  @validLimit: if(isnumber(@limit), @limit, 1);
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: @validLimit;
+  text-overflow: ellipsis;
+}
+
+/* ------------- 背景类 -------------- */
+
+/* 虚化 */
+.blur(@px, @type: 'all') {
+  ._blur(@px, @type: 'all') when (@type = 'all') {
+    filter: blur(@px);
+  }
+  ._blur(@px, @type: 'all') when (@type = 'bg') {
+    backdrop-filter: blur(@px);
+  }
+  ._blur(@px, @type);
+}
+
+.bg(@path, @x: center, @y: center, @size: 100% 100%) {
+  background: url(@path) no-repeat @x @y;
+  background-size: @size;
+}

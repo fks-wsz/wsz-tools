@@ -1,16 +1,29 @@
 <template>
   <view class="content">
     <view>
-      <text class="title">{{ title }}</text>
+      <text class="title" @click="handleClick">{{ title }}</text>
       <view @click="handleCopy">复制</view>
     </view>
+    <GlobalMask ref="abcRef">
+      <testPop />
+      <view>666</view>
+    </GlobalMask>
   </view>
 </template>
 
 <script>
-import { copyText } from '../../../../../../dist/script/mp';
+import { copyText } from 'wsz-tools/script/mp';
+import TestPop1 from '@/components/TestPop.vue';
+import GlobalMask from '@/components/global-mask/GlobalMask.vue';
+import AppendToBody from '@/components/global-mask/append-to-body.vue';
+import Mask from '../../components/global-mask/index';
 
 export default {
+  components: {
+    GlobalMask,
+    AppendToBody,
+    testPop: TestPop1,
+  },
   data() {
     return {
       title: 'Hello',
@@ -21,34 +34,13 @@ export default {
     handleCopy() {
       const text = '1111';
       copyText(text, { title: 'test title' }, () => {
-        console.log(' --->', 'complete');
+        console.log(' --->', 'complet');
       });
+    },
+    handleClick() {
+      Mask.show({});
+      this.$refs.abcRef.show('TestPop22');
     },
   },
 };
 </script>
-
-<style>
-.content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.logo {
-  width: 200rpx;
-  height: 200rpx;
-  margin: 200rpx auto 50rpx;
-}
-
-.text-area {
-  display: flex;
-  justify-content: center;
-}
-
-.title {
-  color: #8f8f94;
-  font-size: 34rpx;
-}
-</style>
