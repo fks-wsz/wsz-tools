@@ -1,5 +1,6 @@
-<script lang="ts">
+<script>
 import Vue from 'vue';
+import { initialProps, initGlobalMaskState } from './main';
 
 /**
  * GlobalMask 组件
@@ -16,47 +17,53 @@ import Vue from 'vue';
 
 export default {
   name: 'GlobalMask',
-  props: {
-    canCloseBySelfClick: {
-      type: Boolean,
-      default: true,
-    },
+  props: initialProps,
+  data() {
+    return initGlobalMaskState();
   },
-  data: () => ({
-    curContentKeyOrName: '',
-    component: null,
-  }),
   computed: {
-    keysOrNamesToVNode() {
+    isShow() {
+      return !!this.curContentKeyOrName || !!this.component;
+    },
+    __keysOrNamesToVNode() {
       const { $slots } = this;
       const defaultSlots = $slots.default || [];
       const keysOrNamesToVNode = defaultSlots.reduce((pre, cur) => {
         let key = cur && cur.key;
-        if (!key && cur) {
+        if (key) {
+          // 有 key 则直接使用
+          pre[key] = cur;
+        } else if (cur) {
           // 无 key 则尝试从组件的 name 中获取
-          const {
-            componentOptions: { Ctor = {} },
-            tag,
-          } = cur;
-          const { name } = Ctor.extendOptions || {};
-          if ((key = name)) {
-            pre[key] = cur;
-          } else {
-            console.error(`[global-mask] 每一个子组件都必须设置key 或 option.name 在 ${tag}未找到`);
+          const { componentOptions, tag } = cur;
+          let Ctor = null;
+          if (componentOptions && (Ctor = componentOptions.Ctor)) {
+            const { name } = Ctor.extendOptions || {};
+            if ((key = name)) {
+              pre[key] = cur;
+            } else {
+              console.error(`[global-mask] 每一个子组件都必须设置key 或 option.name 在 ${tag}未找到`);
+            }
           }
         }
         return pre;
       }, {});
       return keysOrNamesToVNode;
     },
+    __finalStyle() {
+      return {
+        ...(this.innerFlexCenter ? { display: 'flex', 'align-items': 'center', 'justify-content': 'center' } : {}),
+        ...this.styleObj,
+      };
+    },
   },
   methods: {
-    handleClickSelf(event) {
+    handleClickSelf() {
       if (this.canCloseBySelfClick && event.target === event.currentTarget) {
         this.hide();
       }
     },
-    show(keyOrComponent, innerOptions = {}) {
+    show(keyOrComponent, options = {}) {
       if (typeof keyOrComponent === 'string') {
         // 模板内组件或页面调用
         const keyOrName = keyOrComponent;
@@ -66,21 +73,50 @@ export default {
         const component = keyOrComponent;
         this.component = Vue.extend({
           ...component,
-          ...innerOptions,
+          ...(options.inner ? options.inner : {}),
         });
       } else {
         console.error('[global-mask] 不支持的调用参数:', keyOrComponent);
       }
     },
     hide() {
-      if (this.curContentKeyOrName) {
-        this.curContentKeyOrName = '';
-      } else {
-        this.$emit('close');
+      this.__resetState();
+      this.$emit('close');
+    },
+    __resetState() {
+      const initialState = initGlobalMaskState();
+      const keys = Object.keys(initialState);
+      for (const key of keys) {
+        this[key] = initialState[key];
       }
+    },
+    __setPreventScroll() {
+      if (this.preventScroll) {
+        if (this.isShow) {
+          document.body.setAttribute('memory-overflow', document.body.style.overflow);
+          document.body.style.overflow = 'hidden';
+        } else {
+          // 首次渲染或隐藏
+          document.body.style.overflow = document.body.getAttribute('memory-overflow') || document.body.style.overflow;
+          document.body.removeAttribute('memory-overflow');
+        }
+      }
+    },
+    __useTransition(vnode, h) {
+      return h(
+        'transition',
+        {
+          props: {
+            appear: true,
+            name: 'wsz-global-mask',
+          },
+        },
+        [vnode],
+      );
     },
   },
   render(h) {
+    this.__setPreventScroll();
     let target = null;
     if (this.component) {
       // 自定义组件 js 调用
@@ -91,35 +127,53 @@ export default {
       });
     } else if (this.curContentKeyOrName) {
       // 模板组件或页面调用
-      target = this.keysOrNamesToVNode[this.curContentKeyOrName];
+      target = this.__keysOrNamesToVNode[this.curContentKeyOrName];
     }
     if (!target) {
+      // 既没有自定义组件, 也没有子组件标识
       if (this.curContentKeyOrName) {
-        console.error(`[global-mask] 未找到 key 或 name 为 ${this.curContentKeyOrName} 的组件`);
+        this.__resetState();
+        this.console.error(`[global-mask] 未找到 key 或 name 为 ${this.curContentKeyOrName} 的组件`);
       }
       return h();
     } else {
-      return h(
+      let VNode = h(
         'view',
         {
-          class: 'global-mask',
+          class: 'wsz-global-mask',
+          style: this.__finalStyle,
           on: {
             click: this.handleClickSelf,
           },
         },
         [target],
       );
+      VNode = this.useTransition ? this.__useTransition(VNode, h) : VNode;
+      return VNode;
     }
   },
 };
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 @import '../../../../../style/less/mixin.less';
 
-.global-mask {
+.wsz-global-mask {
   .fixed(0,0,0,0);
-  .flex(center, center);
   background-color: rgba(0, 0, 0, 0.8);
+}
+
+.wsz-global-mask-enter,
+.wsz-global-mask-leave-to {
+  opacity: 0;
+}
+.wsz-global-mask-enter-to,
+.wsz-global-mask-leave {
+  opacity: 1;
+}
+
+.wsz-global-mask-enter-active,
+.wsz-global-mask-leave-active {
+  transition: opacity 0.3s ease-in-out;
 }
 </style>

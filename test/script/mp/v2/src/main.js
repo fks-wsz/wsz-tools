@@ -1,12 +1,15 @@
-import Vue from 'vue'
-import App from './App'
-import './uni.promisify.adaptor'
+import Vue from 'vue';
+import App from './App';
+import './uni.promisify.adaptor';
+import CommonUI from 'wsz-tools/framework/vue2';
+import '../../../../../dist/framework/vue/v2/index.css';
 
-Vue.config.productionTip = false
+Vue.use(CommonUI);
+Vue.config.productionTip = false;
 
-App.mpType = 'app'
+App.mpType = 'app';
 
 const app = new Vue({
-  ...App
-})
-app.$mount()
+  ...App,
+});
+app.$mount();

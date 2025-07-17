@@ -1,6 +1,6 @@
 import { defineConfig, RolldownOptions } from 'rolldown';
 import path from 'node:path';
-import { DIST_PATH, ROOT_PATH, SCRIPT_PATH, __DEV__ } from './constants';
+import { DIST_PATH, ROOT_PATH, SCRIPT_PATH, FRAMEWORK_PATH, __DEV__ } from './constants';
 import { defaultsDeep } from 'lodash-es';
 import { dts } from 'rolldown-plugin-dts';
 

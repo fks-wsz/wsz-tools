@@ -4,25 +4,22 @@
       <text class="title" @click="handleClick">{{ title }}</text>
       <view @click="handleCopy">复制</view>
     </view>
-    <GlobalMask ref="abcRef">
-      <testPop />
+    <GlobalMask ref="abcRef" use-transition>
+      <TestPop :key="'TestPop1'" />
       <view>666</view>
     </GlobalMask>
   </view>
 </template>
 
 <script>
-import { copyText } from 'wsz-tools/script/mp';
-import TestPop1 from '@/components/TestPop.vue';
-import GlobalMask from '@/components/global-mask/GlobalMask.vue';
+// import { copyText } from 'wsz-tools/script/mp';
+import TestPop from '@/components/TestPop.vue';
 import AppendToBody from '@/components/global-mask/append-to-body.vue';
-import Mask from '../../components/global-mask/index';
 
 export default {
   components: {
-    GlobalMask,
     AppendToBody,
-    testPop: TestPop1,
+    TestPop,
   },
   data() {
     return {
@@ -38,9 +35,17 @@ export default {
       });
     },
     handleClick() {
-      Mask.show({});
-      this.$refs.abcRef.show('TestPop22');
+      this.$MASK.show(TestPop, {
+        canCloseBySelfClick: true,
+      });
+      // this.$refs.abcRef.show('TestPop1');
     },
   },
 };
 </script>
+
+<style scoped>
+.content {
+  height: 200vh;
+}
+</style>
