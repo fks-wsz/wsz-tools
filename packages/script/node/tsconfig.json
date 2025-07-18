@@ -4,7 +4,11 @@
     "module": "commonjs",
     "lib": ["ES2020"],
     "composite": true,
-    "outDir": "../../../dist/types/script/node"
+    "outDir": "../../../dist/types/script/node",
+    "emitDeclarationOnly": true,
+    "isolatedDeclarations": true,
+    "declaration": true,
+    "declarationMap": true
   },
   "include": ["./*.ts", "../../global.d.ts"]
 }

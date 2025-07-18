@@ -4,7 +4,7 @@ const COMPONENTS = [GlobalMask];
 
 const APIS = [MASK];
 
-const install = (Vue) => {
+const install = (Vue: any) => {
   COMPONENTS.forEach((component) => {
     Vue.component(component.name, component);
   });

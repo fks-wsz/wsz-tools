@@ -1,0 +1,20 @@
+@import '../../../../../../style/less/mixin.less';
+
+.common-global-mask {
+  .fixed(0,0,0,0);
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.common-global-mask-enter,
+.common-global-mask-leave-to {
+  opacity: 0;
+}
+.common-global-mask-enter-to,
+.common-global-mask-leave {
+  opacity: 1;
+}
+
+.common-global-mask-enter-active,
+.common-global-mask-leave-active {
+  transition: opacity 0.3s ease-in-out;
+}

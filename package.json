@@ -12,7 +12,8 @@
   },
   "exports": {
     "./framework/vue2": {
-      "import": "./dist/framework/vue/v2/index.js"
+      "import": "./dist/framework/vue/v2/index.js",
+      "types": "./dist/types/framework/vue2.d.ts"
     },
     "./script/browser": {
       "import": "./dist/script/browser/index.js",
@@ -45,22 +46,29 @@
   "scripts": {
     "init": "npm install && cd ./test && npm install",
     "postinit": "npm run link",
-    "prepare": "tsx ./scripts/npm-prepare.ts",
-    "dev": "npm-run-all --parallel --continue-on-error dev:build test:browser",
-    "dev:build": "dotenvx run -f .env.development -- rolldown -c ./rolldown.config.ts --watch",
+    "dev:web": "dotenvx run -f .env.development -- rolldown -c ./rolldown.config.ts --watch",
+    "dev:vue2": "rollup --config rollup.config.ts --configPlugin @rollup/plugin-typescript --watch",
     "server": "live-server ./test --port=3636 --host=127.0.0.1 --open",
+    "server:web": "cd ./test && npm run dev",
+    "server:mp": "cd ./test/script/mp/v2 && npm run serve",
+    "test:web": "npm-run-all --parallel -c server:web dev:web",
+    "test:mp": "npm-run-all --parallel -c server:mp dev:web",
     "prebuild": "rimraf ./dist",
-    "build": "dotenvx run -f .env.production -- rolldown -c ./rolldown.config.ts && npm run rollup",
-    "link": "tsx ./scripts/package-link.ts",
-    "test:browser": "cd ./test && npm run dev",
-    "test:mp": "cd ./test/script/mp/v2 && npm run serve",
+    "build": "npm-run-all --parallel build:script build:vue2",
+    "build:script": "rimraf ./dist && dotenvx run -f .env.production -- rolldown -c ./rolldown.config.ts",
+    "build:vue": "rimraf ./dist && dotenvx run -f .env.production -- rollup --config rollup.config.ts --configPlugin @rollup/plugin-typescript",
+    "build:vuedts": "rimraf ./dist/types/framework && dotenvx run -f .env.production -- rollup --config ./rollup.config.dts.ts --configPlugin @rollup/plugin-typescript",
     "cz": "npx lint-staged -c ./.lintstagedrc.cjs && cz",
-    "rollup": "rollup --config rollup.config.ts --configPlugin @rollup/plugin-typescript --watch"
+    "prepare": "tsx ./scripts/npm-prepare.ts",
+    "link": "tsx ./scripts/package-link.ts"
   },
   "devDependencies": {
     "@dcloudio/types": "^3.4.15",
+    "@rollup/plugin-alias": "^5.1.1",
     "@rollup/plugin-commonjs": "^28.0.6",
     "@rollup/plugin-node-resolve": "^16.0.1",
+    "@rollup/plugin-replace": "^6.0.2",
+    "@rollup/plugin-typescript": "^12.1.4",
     "@types/lodash-es": "^4.17.12",
     "@types/node": "^24.0.3",
     "commitizen": "^4.2.6",
@@ -82,6 +90,7 @@
     "rolldown-plugin-dts": "^0.13.14",
     "rollup": "^4.45.1",
     "rollup-plugin-postcss": "^4.0.2",
+    "rollup-plugin-typescript2": "^0.36.0",
     "rollup-plugin-vue": "^5.1.9",
     "stylelint": "^16.19.1",
     "stylelint-config-idiomatic-order": "^10.0.0",

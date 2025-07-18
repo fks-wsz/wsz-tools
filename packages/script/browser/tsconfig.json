@@ -4,7 +4,11 @@
     "module": "es2015",
     "lib": ["DOM", "ES2020"],
     "composite": true,
-    "outDir": "../../../dist/types/script/browser"
+    "outDir": "../../../dist/types/script/browser",
+    "emitDeclarationOnly": true,
+    "isolatedDeclarations": true,
+    "declaration": true,
+    "declarationMap": true
   },
   "include": ["./*.ts", "../../global.d.ts", "src/*.ts"]
 }

@@ -51,3 +51,5 @@ export function getGlobalThis(): typeof globalThis {
   // fallback
   return Function('return this')();
 }
+
+export * from './src/env';

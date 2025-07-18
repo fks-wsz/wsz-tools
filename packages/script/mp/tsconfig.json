@@ -5,7 +5,11 @@
     "lib": ["es2020", "DOM"],
     "types": ["@dcloudio/types"],
     "composite": true,
-    "outDir": "../../../dist/types/script/mp"
+    "outDir": "../../../dist/types/script/mp",
+    "emitDeclarationOnly": true,
+    "isolatedDeclarations": true,
+    "declaration": true,
+    "declarationMap": true
   },
   "include": ["./*.ts", "../../global.d.ts"]
 }
