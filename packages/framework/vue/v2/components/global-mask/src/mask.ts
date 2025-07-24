@@ -46,10 +46,16 @@ const initialProps = {
 function getInitialGlobalMaskData(): {
   curContentKeyOrName: string;
   component: null | ExtendedVue<any, any, any, any, any>;
+  innerOptions: {
+    inner?: Record<keyof any, any>;
+    props?: Record<keyof any, any>;
+    listeners?: Record<string, Function>;
+  };
 } {
   return {
     curContentKeyOrName: '',
     component: null,
+    innerOptions: EMPTY_OBJ,
   };
 }
 
@@ -118,6 +124,7 @@ const GlobalMaskConstructor = Vue.extend({
           ...component,
           ...(options.inner ? options.inner : EMPTY_OBJ),
         });
+        this.innerOptions = options;
       } else {
         console.error('[global-mask] 不支持的调用参数:', keyOrComponent);
       }
@@ -166,6 +173,10 @@ const GlobalMaskConstructor = Vue.extend({
       target = h(this.component, {
         on: {
           close: this.hide,
+          ...(this.innerOptions.listeners || EMPTY_OBJ),
+        },
+        props: {
+          ...this.innerOptions.props,
         },
       });
     } else if (this.curContentKeyOrName) {
