@@ -41,7 +41,8 @@
     "packages/script/browser",
     "packages/script/mp",
     "packages/script/node",
-    "packages/script/common"
+    "packages/script/common",
+    "packages/style"
   ],
   "scripts": {
     "init": "npm install && cd ./test && npm install",
@@ -55,9 +56,8 @@
     "test:mp": "npm-run-all --parallel -c server:mp dev:web",
     "prebuild": "rimraf ./dist",
     "build": "npm-run-all --parallel build:script build:vue2",
+    "build:vue2": "dotenvx run --env target=vue2 -f .env.production -- tsx ./scripts/rollup/build.ts",
     "build:script": "rimraf ./dist && dotenvx run -f .env.production -- rolldown -c ./rolldown.config.ts",
-    "build:vue": "rimraf ./dist && dotenvx run -f .env.production -- rollup --config rollup.config.ts --configPlugin @rollup/plugin-typescript",
-    "build:vuedts": "rimraf ./dist/types/framework && dotenvx run -f .env.production -- rollup --config ./rollup.config.dts.ts --configPlugin @rollup/plugin-typescript",
     "cz": "npx lint-staged -c ./.lintstagedrc.cjs && cz",
     "prepare": "tsx ./scripts/npm-prepare.ts",
     "link": "tsx ./scripts/package-link.ts"
@@ -65,7 +65,6 @@
   "devDependencies": {
     "@dcloudio/types": "^3.4.15",
     "@rollup/plugin-alias": "^5.1.1",
-    "@rollup/plugin-commonjs": "^28.0.6",
     "@rollup/plugin-node-resolve": "^16.0.1",
     "@rollup/plugin-replace": "^6.0.2",
     "@rollup/plugin-typescript": "^12.1.4",
@@ -89,8 +88,8 @@
     "rolldown": "^1.0.0-beta.27",
     "rolldown-plugin-dts": "^0.13.14",
     "rollup": "^4.45.1",
+    "rollup-plugin-dts": "^6.2.1",
     "rollup-plugin-postcss": "^4.0.2",
-    "rollup-plugin-typescript2": "^0.36.0",
     "rollup-plugin-vue": "^5.1.9",
     "stylelint": "^16.19.1",
     "stylelint-config-idiomatic-order": "^10.0.0",

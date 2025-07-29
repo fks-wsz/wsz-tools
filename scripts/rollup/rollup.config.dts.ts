@@ -1,9 +1,9 @@
 import { defineConfig } from 'rollup';
-import { FRAMEWORK_PATH, DIST_PATH } from './constants';
+import { FRAMEWORK_PATH, DIST_PATH } from '../../constants';
 import path from 'path';
 import { dts } from 'rollup-plugin-dts';
 
-const dtsConfig = {
+const configs = {
   vue2: defineConfig({
     input: path.join(FRAMEWORK_PATH, '/vue/v2/', 'index.ts'),
     output: {
@@ -14,4 +14,5 @@ const dtsConfig = {
   }),
 };
 
-export default Object.values(dtsConfig);
+export type ConfigKey = keyof typeof configs;
+export default configs;
