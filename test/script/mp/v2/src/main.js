@@ -2,7 +2,7 @@ import Vue from 'vue';
 import App from './App';
 import './uni.promisify.adaptor';
 import CommonUI from 'wsz-tools/framework/vue2';
-import '../../../../../dist/framework/vue/v2/index.css';
+import 'wsz-tools/style/vue2.css';
 
 Vue.use(CommonUI);
 Vue.config.productionTip = false;

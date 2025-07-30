@@ -15,6 +15,7 @@
       "import": "./dist/framework/vue/v2/index.js",
       "types": "./dist/types/framework/vue2.d.ts"
     },
+    "./style/vue2.css": "./dist/framework/vue/v2/style/index.css",
     "./script/browser": {
       "import": "./dist/script/browser/index.js",
       "types": "./dist/types/script/browser/index.d.ts"

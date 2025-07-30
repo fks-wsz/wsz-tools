@@ -15,6 +15,7 @@ import { isMiniProgram, EMPTY_OBJ } from '@script/common';
  * 2.2 使用MASK.hide() 来隐藏内容
  */
 
+/** @description props */
 const initialProps = {
   // 点击mask 是否关闭
   canCloseBySelfClick: {
@@ -43,6 +44,7 @@ const initialProps = {
   },
 };
 
+/** @description data */
 function getInitialGlobalMaskData(): {
   curContentKeyOrName: string;
   component: null | ExtendedVue<any, any, any, any, any>;
