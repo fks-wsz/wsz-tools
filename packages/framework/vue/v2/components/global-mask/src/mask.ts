@@ -1,6 +1,6 @@
 import Vue, { VNode } from 'vue';
 import { CreateElement, ExtendedVue, VueConstructor } from 'vue/types/vue';
-import { isMiniProgram, EMPTY_OBJ } from '@script/common';
+import { isMiniProgram, EMPTY_OBJ, EMPTY_ARR } from '@script/common';
 
 /**
  * GlobalMask 组件
@@ -61,8 +61,9 @@ function getInitialGlobalMaskData(): {
   };
 }
 
+export const GlobalMaskName = 'FuncGlobalMask';
 const GlobalMaskConstructor = Vue.extend({
-  name: 'GlobalMask',
+  name: GlobalMaskName,
   props: initialProps,
   data() {
     return getInitialGlobalMaskData();
@@ -73,7 +74,7 @@ const GlobalMaskConstructor = Vue.extend({
     },
     __keysOrNamesToVNode(): Record<string, VNode> {
       const { $slots } = this;
-      const defaultSlots = $slots.default || [];
+      const defaultSlots = $slots.default || EMPTY_ARR;
       const keysOrNamesToVNode = defaultSlots.reduce(
         (pre: Record<string, VNode>, cur) => {
           let key = cur && cur.key;
@@ -188,8 +189,9 @@ const GlobalMaskConstructor = Vue.extend({
     if (!target) {
       // 既没有自定义组件, 也没有子组件标识
       if (this.curContentKeyOrName) {
+        const name = this.curContentKeyOrName;
         this.__resetState();
-        console.error(`[global-mask] 未找到 key 或 name 为 ${this.curContentKeyOrName} 的组件`);
+        console.error(`[global-mask] 未找到 key 或 name 为 ${name} 的组件`);
       }
       return h();
     } else {
@@ -210,8 +212,6 @@ const GlobalMaskConstructor = Vue.extend({
   },
 });
 
-let vm: InstanceType<typeof GlobalMaskConstructor> | null = null;
-
 function getPropsDefaults(propOption: any): Record<string, any> {
   const keys = Object.keys(propOption);
   const defaults = keys.reduce((acc: any, key) => {
@@ -226,6 +226,7 @@ function getPropsDefaults(propOption: any): Record<string, any> {
   return defaults;
 }
 
+let vm: InstanceType<typeof GlobalMaskConstructor> | null = null;
 const MASK = {
   name: '$MASK',
   show<Component extends VueConstructor<Vue>>(component: Component, props = EMPTY_OBJ, innerOptions = EMPTY_OBJ) {

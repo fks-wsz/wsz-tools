@@ -1,3 +1,4 @@
+import { PluginObject } from 'vue';
 import { GlobalMask, MASK } from './components/global-mask';
 
 const COMPONENTS = [GlobalMask];
@@ -6,7 +7,7 @@ const APIS = [MASK];
 
 const install = (Vue: any) => {
   COMPONENTS.forEach((component) => {
-    Vue.component(component.name, component);
+    (component as unknown as PluginObject<void>).install(Vue);
   });
 
   APIS.forEach((api) => {

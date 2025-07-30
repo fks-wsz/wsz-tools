@@ -53,3 +53,4 @@ export function getGlobalThis(): typeof globalThis {
 }
 
 export * from './src/env';
+export * from './src/theme';

@@ -1,3 +1,7 @@
+import { getGlobalThis } from '@script/common';
+
+const globalThis = getGlobalThis();
+
 export function isMiniProgram(): boolean {
   if (typeof uni !== 'undefined') {
     return true;
@@ -20,3 +24,12 @@ export function isMiniProgram(): boolean {
 
   return false;
 }
+
+export const isBrowser: boolean =
+  typeof globalThis !== 'undefined' && typeof (globalThis as any)?.document !== 'undefined';
+
+export const isNode: boolean =
+  typeof globalThis !== 'undefined' &&
+  typeof (globalThis as any).process !== 'undefined' &&
+  (globalThis as any).process.versions != null &&
+  (globalThis as any).process.versions.node != null;
