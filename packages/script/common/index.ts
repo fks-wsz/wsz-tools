@@ -52,5 +52,5 @@ export function getGlobalThis(): typeof globalThis {
   return Function('return this')();
 }
 
-export * from './src/env';
-export * from './src/theme';
+export { isBrowser, isNode, isMiniProgram } from './src/env';
+export { theme } from './src/theme';

@@ -4,7 +4,7 @@ const btn = document.getElementById('btn') as HTMLButtonElement;
 const canvas = document.getElementById('canvas') as HTMLCanvasElement;
 const logger = new Logger();
 
-logger.log('This is an error log message', { key: 1 });
+logger.log('This is an error log message', { key: 1 }, [666, { address: 111 }]);
 logger.logScoped('MAYBE FE', 'This is an error log message', { key: 1 });
 logger.error('This is an error log message', { key: 1 });
 logger.errorScoped('MAYBE BE', 'This is an error log message', { key: 1 });

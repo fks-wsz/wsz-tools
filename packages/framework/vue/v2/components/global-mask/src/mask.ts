@@ -134,6 +134,7 @@ const GlobalMaskConstructor = Vue.extend({
     },
     hide(): void {
       this.__resetState();
+      this.__setPreventScroll();
       this.$emit('close');
     },
     __resetState() {
@@ -144,14 +145,21 @@ const GlobalMaskConstructor = Vue.extend({
       }
     },
     __setPreventScroll() {
-      if (this.preventScroll) {
-        if (this.isShow) {
+      if (!this.preventScroll) {
+        return;
+      }
+      if (this.isShow) {
+        if (document.body.style.overflow) {
           document.body.setAttribute('memory-overflow', document.body.style.overflow);
-          document.body.style.overflow = 'hidden';
-        } else {
-          // 首次渲染或隐藏
-          document.body.style.overflow = document.body.getAttribute('memory-overflow') || document.body.style.overflow;
+        }
+        document.body.style.overflow = 'hidden';
+      } else {
+        if (document.body.hasAttribute('memory-overflow')) {
+          // 隐藏
+          document.body.style.overflow = document.body.getAttribute('memory-overflow')!;
           document.body.removeAttribute('memory-overflow');
+        } else {
+          document.body.style.overflow = '';
         }
       }
     },
@@ -218,7 +226,7 @@ function getPropsDefaults(propOption: any): Record<string, any> {
     const itemDefault = propOption[key].default;
     if (typeof itemDefault === 'function') {
       acc[key] = itemDefault();
-    } else if (typeof itemDefault !== undefined) {
+    } else if (typeof itemDefault !== 'undefined') {
       acc[key] = itemDefault;
     }
     return acc;
