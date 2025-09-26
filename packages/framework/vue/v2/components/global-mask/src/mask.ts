@@ -1,6 +1,7 @@
 import Vue, { VNode } from 'vue';
 import { CreateElement, ExtendedVue, VueConstructor } from 'vue/types/vue';
 import { isMiniProgram, EMPTY_OBJ, EMPTY_ARR } from '@script/common';
+import { last } from 'lodash-es';
 
 /**
  * GlobalMask 组件
@@ -234,11 +235,12 @@ function getPropsDefaults(propOption: any): Record<string, any> {
   return defaults;
 }
 
-let vm: InstanceType<typeof GlobalMaskConstructor> | null = null;
+const vms: { vm: InstanceType<typeof GlobalMaskConstructor>; vmId: number }[] = [];
+let vmId = 0;
 const MASK = {
   name: '$MASK',
   show<Component extends VueConstructor<Vue>>(component: Component, props = EMPTY_OBJ, innerOptions = EMPTY_OBJ) {
-    vm = new GlobalMaskConstructor({
+    const vm = new GlobalMaskConstructor({
       propsData: {
         ...getPropsDefaults(initialProps),
         ...props,
@@ -250,12 +252,16 @@ const MASK = {
       this.hide();
     });
     vm.show<Component>(component, innerOptions);
+    vms.push({
+      vm,
+      vmId: vmId++,
+    });
   },
   hide() {
-    if (vm) {
-      document.body.removeChild(vm.$el);
-      vm.$destroy();
-      vm = null;
+    const lastVm = vms.pop();
+    if (lastVm) {
+      document.body.removeChild(lastVm.vm.$el);
+      lastVm.vm.$destroy();
     } else {
       console.warn('[global-mask] 没有可关闭的遮罩层');
     }
